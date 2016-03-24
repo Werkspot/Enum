@@ -1,0 +1,6 @@
+coverage/
+composer
+composer.lock
+.idea/
+vendor/
+bin/
