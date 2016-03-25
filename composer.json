@@ -21,7 +21,6 @@
             "Werkspot\\Enum\\Tests\\": ["tests/"]
         }
     },
-    "minimum-stability": "stable",
     "require": {
         "php": ">=5.6.5"
     },
