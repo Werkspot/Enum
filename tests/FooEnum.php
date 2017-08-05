@@ -3,7 +3,7 @@ namespace Werkspot\Enum\Tests;
 
 use Werkspot\Enum\AbstractEnum;
 
-class FooEnum extends AbstractEnum
+final class FooEnum extends AbstractEnum
 {
     const A = 'A';
     const B = 'BEE';

@@ -1,6 +1,8 @@
 <?php
 namespace Werkspot\Enum;
 
+use InvalidArgumentException;
+use ReflectionClass;
 use Werkspot\Enum\Util\ClassNameConverter;
 
 abstract class AbstractEnum
@@ -11,7 +13,7 @@ abstract class AbstractEnum
     protected function __construct($value)
     {
         if (!$this->isValid($value)) {
-            throw new \InvalidArgumentException('Invalid ' . $this->getClassName() . " value: '" . $value . "'");
+            throw new InvalidArgumentException(sprintf('Invalid %s value: \'%s\'', $this->getClassName(), $value));
         }
 
         $this->value = $value;
@@ -25,7 +27,7 @@ abstract class AbstractEnum
     public static function get($value)
     {
         $class = get_called_class();
-        $instanceKey = $class . '.' . $value;
+        $instanceKey = sprintf('%s.%s', $class, $value);
 
         if (!isset(static::$instances[$instanceKey])) {
             self::$instances[$instanceKey] = new $class($value);
@@ -34,6 +36,9 @@ abstract class AbstractEnum
         return self::$instances[$instanceKey];
     }
 
+    /**
+     * @return mixed
+     */
     public function getValue()
     {
         return $this->value;
@@ -48,6 +53,11 @@ abstract class AbstractEnum
         return (string) $this->value;
     }
 
+    /**
+     * @param $value
+     *
+     * @return bool
+     */
     protected function isValid($value)
     {
         return in_array($value, $this->getValidOptions(), true);
@@ -58,7 +68,7 @@ abstract class AbstractEnum
      */
     public static function getValidOptions()
     {
-        $reflection = new \ReflectionClass(get_called_class());
+        $reflection = new ReflectionClass(get_called_class());
 
         return array_values($reflection->getConstants());
     }

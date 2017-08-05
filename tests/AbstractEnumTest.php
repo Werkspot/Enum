@@ -3,7 +3,7 @@ namespace Werkspot\Enum\Tests;
 
 use PHPUnit_Framework_TestCase;
 
-class AbstractEnumTest extends PHPUnit_Framework_TestCase
+final class AbstractEnumTest extends PHPUnit_Framework_TestCase
 {
     public function testEnum()
     {
@@ -51,24 +51,24 @@ class AbstractEnumTest extends PHPUnit_Framework_TestCase
 
     public function getExceptionData()
     {
-        return array(
-            array('a'),
-            array('bee'),
-            array('B '),
-            array('C'),
-            array(true),
-        );
+        return [
+            ['a'],
+            ['bee'],
+            ['B '],
+            ['C'],
+            [true],
+        ];
     }
 
     public function testGetValidOptions()
     {
         $this->assertSame(
-            array(
+            [
                 FooEnum::A,
                 FooEnum::B,
                 FooEnum::A3,
                 FooEnum::ANULL,
-            ),
+            ],
             FooEnum::getValidOptions()
         );
     }
