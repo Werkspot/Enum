@@ -1,6 +1,7 @@
 {
     "name": "werkspot/enum",
     "description": "Werkspot's Enum Library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Werkspot Team",
