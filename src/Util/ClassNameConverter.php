@@ -1,16 +1,12 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Werkspot\Enum\Util;
 
 final class ClassNameConverter
 {
-    /**
-     * In: FooBar\BazQuux
-     * Out: foo_bar.baz_quux
-     *
-     * @param string $className
-     * @return string
-     */
-    public static function convertClassNameToServiceName($className)
+    public static function convertClassNameToServiceName(string $className): string
     {
         $className = str_replace('\\', '.', $className);
 
@@ -21,14 +17,7 @@ final class ClassNameConverter
         return strtolower($serviceName);
     }
 
-    /**
-     * In: foo_bar.baz_quux
-     * Out: FooBar\BazQuux
-     *
-     * @param string $serviceName
-     * @return string
-     */
-    public static function convertServiceNameToClassName($serviceName)
+    public static function convertServiceNameToClassName(string $serviceName): string
     {
         $className = preg_replace_callback('/\.([a-z])/', function($c) { return '\\' . ucfirst($c[1]); }, $serviceName);
 
@@ -36,14 +25,7 @@ final class ClassNameConverter
         return ucfirst($className);
     }
 
-    /**
-     * In: Some\Namespace\And\Class
-     * Out: Class
-     *
-     * @param string $className
-     * @return string
-     */
-    public static function stripNameSpace($className)
+    public static function stripNameSpace(string $className): string
     {
         return preg_replace('|.+\\\\|', '', $className);
     }
