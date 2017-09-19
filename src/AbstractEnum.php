@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Werkspot\Enum;
 
 use InvalidArgumentException;
@@ -19,12 +22,7 @@ abstract class AbstractEnum
         $this->value = $value;
     }
 
-    /**
-     * @param $value
-     *
-     * @return $this
-     */
-    public static function get($value)
+    public static function get($value): self
     {
         $class = get_called_class();
         $instanceKey = sprintf('%s.%s', $class, $value);
@@ -36,15 +34,12 @@ abstract class AbstractEnum
         return self::$instances[$instanceKey];
     }
 
-    /**
-     * @return mixed
-     */
     public function getValue()
     {
         return $this->value;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         if ($this->value === null) {
             return '';
@@ -53,30 +48,19 @@ abstract class AbstractEnum
         return (string) $this->value;
     }
 
-    /**
-     * @param $value
-     *
-     * @return bool
-     */
-    protected function isValid($value)
+    protected function isValid($value): bool
     {
         return in_array($value, $this->getValidOptions(), true);
     }
 
-    /**
-     * @return array
-     */
-    public static function getValidOptions()
+    public static function getValidOptions(): array
     {
         $reflection = new ReflectionClass(get_called_class());
 
         return array_values($reflection->getConstants());
     }
 
-    /**
-     * @return string
-     */
-    protected function getClassName()
+    protected function getClassName(): string
     {
         return ClassNameConverter::stripNameSpace(get_called_class());
     }

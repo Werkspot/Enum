@@ -1,11 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Werkspot\Enum\Tests;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-final class AbstractEnumTest extends PHPUnit_Framework_TestCase
+final class AbstractEnumTest extends TestCase
 {
-    public function testEnum()
+    public function testEnum(): void
     {
         $a = FooEnum::get(FooEnum::A);
         $b = FooEnum::get(FooEnum::B);
@@ -16,21 +19,21 @@ final class AbstractEnumTest extends PHPUnit_Framework_TestCase
         $this->assertSame(FooEnum::B, (string) $b);
     }
 
-    public function testNull()
+    public function testNull(): void
     {
         $nullEnum = FooEnum::get(null);
         $this->assertNull($nullEnum->getValue());
         $this->assertSame('', (string) $nullEnum);
     }
 
-    public function testInteger()
+    public function testInteger(): void
     {
         $integerEnum = FooEnum::get(3);
         $this->assertSame(3, $integerEnum->getValue());
         $this->assertSame('3', (string) $integerEnum);
     }
 
-    public function testSingleton()
+    public function testSingleton(): void
     {
         $a = FooEnum::get(FooEnum::A);
         $a2 = FooEnum::get(FooEnum::A);
@@ -44,12 +47,12 @@ final class AbstractEnumTest extends PHPUnit_Framework_TestCase
      * @expectedException \InvalidArgumentException
      * @dataProvider getExceptionData
      */
-    public function testException($illegalValue)
+    public function testException($illegalValue): void
     {
         FooEnum::get($illegalValue);
     }
 
-    public function getExceptionData()
+    public function getExceptionData(): array
     {
         return [
             ['a'],
@@ -60,7 +63,7 @@ final class AbstractEnumTest extends PHPUnit_Framework_TestCase
         ];
     }
 
-    public function testGetValidOptions()
+    public function testGetValidOptions(): void
     {
         $this->assertSame(
             [
@@ -72,5 +75,4 @@ final class AbstractEnumTest extends PHPUnit_Framework_TestCase
             FooEnum::getValidOptions()
         );
     }
-
 }

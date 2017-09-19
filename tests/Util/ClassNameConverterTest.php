@@ -1,25 +1,31 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Werkspot\Enum\Tests\Util;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Werkspot\Enum\Util\ClassNameConverter;
 
-final class ClassNameConverterTest extends PHPUnit_Framework_TestCase
+final class ClassNameConverterTest extends TestCase
 {
-    /** @dataProvider getConversionData */
-    public function testConvertClassNameToServiceName($class, $service)
+    /**
+     * @dataProvider getConversionData
+     */
+    public function testConvertClassNameToServiceName(string $class, string $service): void
     {
         $this->assertSame($service, ClassNameConverter::convertClassNameToServiceName($class));
     }
 
-    /** @dataProvider getConversionData */
-    public function testConvertServiceNameToClassName($class, $service)
+    /**
+     * @dataProvider getConversionData
+     */
+    public function testConvertServiceNameToClassName(string $class, string $service): void
     {
         $this->assertSame($class, ClassNameConverter::convertServiceNameToClassName($service));
     }
 
-    /** @return array */
-    public function getConversionData()
+    public function getConversionData(): array
     {
         return [
             ['FooClass', 'foo_class'],
@@ -27,14 +33,15 @@ final class ClassNameConverterTest extends PHPUnit_Framework_TestCase
         ];
     }
 
-    /** @dataProvider getNamespaceData */
-    public function testStripNamespace($class, $fullClass)
+    /**
+     * @dataProvider getNamespaceData
+     */
+    public function testStripNamespace(string $class, string $fullClass): void
     {
         $this->assertSame($class, ClassNameConverter::stripNameSpace($fullClass));
     }
 
-    /** @return array */
-    public function getNamespaceData()
+    public function getNamespaceData(): array
     {
         return [
             ['FooClass', 'FooClass'],

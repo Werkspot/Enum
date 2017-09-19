@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Werkspot\Enum\Tests;
 
 use Werkspot\Enum\AbstractEnum;
