@@ -8,71 +8,160 @@ use PHPUnit\Framework\TestCase;
 
 final class AbstractEnumTest extends TestCase
 {
-    public function testEnum(): void
+    /**
+     * @test
+     */
+    public function enum(): void
     {
-        $a = FooEnum::get(FooEnum::A);
-        $b = FooEnum::get(FooEnum::B);
+        $a = TestEnum::get(TestEnum::A);
+        $b = TestEnum::get(TestEnum::B);
 
-        $this->assertSame(FooEnum::A, $a->getValue());
-        $this->assertSame(FooEnum::B, $b->getValue());
-        $this->assertSame(FooEnum::A, (string) $a);
-        $this->assertSame(FooEnum::B, (string) $b);
-    }
-
-    public function testNull(): void
-    {
-        $nullEnum = FooEnum::get(null);
-        $this->assertNull($nullEnum->getValue());
-        $this->assertSame('', (string) $nullEnum);
-    }
-
-    public function testInteger(): void
-    {
-        $integerEnum = FooEnum::get(3);
-        $this->assertSame(3, $integerEnum->getValue());
-        $this->assertSame('3', (string) $integerEnum);
-    }
-
-    public function testSingleton(): void
-    {
-        $a = FooEnum::get(FooEnum::A);
-        $a2 = FooEnum::get(FooEnum::A);
-        $b = FooEnum::get(FooEnum::B);
-
-        $this->assertSame($a, $a2);
-        $this->assertNotSame($a, $b);
+        self::assertSame(TestEnum::A, $a->getValue());
+        self::assertSame(TestEnum::B, $b->getValue());
+        self::assertSame(TestEnum::A, (string) $a);
+        self::assertSame(TestEnum::B, (string) $b);
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @dataProvider getExceptionData
+     * @test
      */
-    public function testException($illegalValue): void
+    public function null(): void
     {
-        FooEnum::get($illegalValue);
+        $nullEnum = TestEnum::get(null);
+        self::assertNull($nullEnum->getValue());
+        self::assertSame('', (string) $nullEnum);
     }
 
-    public function getExceptionData(): array
+    /**
+     * @test
+     */
+    public function integer(): void
+    {
+        $integerEnum = TestEnum::get(3);
+        self::assertSame(3, $integerEnum->getValue());
+        self::assertSame('3', (string) $integerEnum);
+    }
+
+    /**
+     * @test
+     */
+    public function equalsShouldReturnTrueWhenComparingObjectsWithTheSameTypeAndValue(): void
+    {
+        $a = TestEnum::get(TestEnum::A);
+
+        self::assertTrue($a->equals(TestEnum::get(TestEnum::A)));
+    }
+
+    /**
+     * @test
+     */
+    public function equalsShouldReturnFalseWhenComparingObjectsWithTheSameTypeButDifferentValue(): void
+    {
+        $a = TestEnum::get(TestEnum::A);
+
+        self::assertFalse($a->equals(TestEnum::get(TestEnum::B)));
+    }
+
+    /**
+     * @test
+     */
+    public function equalsShouldReturnFalseWhenComparingObjectsWithTheSameValueButDifferentType(): void
+    {
+        $a = TestEnum::get(TestEnum::A);
+
+        self::assertFalse($a->equals(Test2Enum::get(Test2Enum::A)));
+    }
+
+    /**
+     * @test
+     */
+    public function equalsShouldReturnTrueWhenComparingObjectsWithDifferentTypeAndValue(): void
+    {
+        $a = TestEnum::get(TestEnum::A);
+
+        self::assertFalse($a->equals(Test2Enum::get(Test2Enum::C)));
+    }
+
+    /**
+     * @test
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Value [anything] is not matching any valid value of class "TestEnum". Valid values are ['A', 'BEE', 1, 3, NULL, true].
+     */
+    public function exceptionMessage(): void
+    {
+        TestEnum::get('anything');
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider getInvertedCaseOptions
+     * @expectedException \InvalidArgumentException
+     *
+     * @param mixed $option
+     */
+    public function getWithInvertedCaseIsIncorrect($option): void
+    {
+        TestEnum::get($option);
+    }
+
+    public function getInvertedCaseOptions()
     {
         return [
-            ['a'],
-            ['bee'],
-            ['B '],
-            ['C'],
-            [true],
+            [strtolower(TestEnum::A)],
+            [strtolower(TestEnum::B)],
         ];
     }
 
-    public function testGetValidOptions(): void
+    /**
+     * @test
+     *
+     * @expectedException \InvalidArgumentException
+     */
+    public function getWithStrictEqualMatchThrowsException(): void
     {
-        $this->assertSame(
+        TestEnum::get('1');
+    }
+
+
+    /**
+     * @test
+     */
+    public function isShouldAllowToCallMethodsBasedOnConstantNames(): void
+    {
+        $enum = TestEnum::nameWithUnderscore();
+
+        self::assertInstanceOf(TestEnum::class, $enum);
+        self::assertSame(TestEnum::NAME_WITH_UNDERSCORE, $enum->getValue());
+    }
+
+    /**
+     * @test
+     *
+     * @expectedException \BadMethodCallException
+     * @expectedExceptionMessage Werkspot\Enum\Tests\TestEnum::isDoesNotExist() does not exist
+     */
+    public function isShouldThrowAnExceptionWhenWhenCallingAnInvalidMethod(): void
+    {
+        TestEnum::isDoesNotExist();
+    }
+
+    /**
+     * @test
+     */
+    public function getValidOptions(): void
+    {
+        self::assertSame(
             [
-                FooEnum::A,
-                FooEnum::B,
-                FooEnum::A3,
-                FooEnum::ANULL,
+                TestEnum::A,
+                TestEnum::B,
+                TestEnum::A1,
+                TestEnum::A3,
+                TestEnum::ANULL,
+                TestEnum::NAME_WITH_UNDERSCORE,
             ],
-            FooEnum::getValidOptions()
+            TestEnum::getValidOptions()
         );
     }
 }
