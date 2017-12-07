@@ -21,6 +21,11 @@ namespace YourAwesomeOrganisation\Project;
 
 use Werkspot\Enum\AbstractEnum;
 
+/**
+ * @method static FooEnum foo()
+ * @method static FooEnum bar()
+ * @method static FooEnum baz()
+ */
 final class FooEnum extends AbstractEnum
 {
     const FOO = 'foo';
@@ -53,8 +58,9 @@ final class Bar
 Implementation of that class
 
 ```php
-$fooEnum = FooEnum::get(FooEnum::BAZ);
+$fooEnum = FooEnum::baz();
 $bar = new Bar($fooEnum);
+
 $enum = $bar->getEnum();
 $value = $enum->getValue(); // will return 'baz'
 ```
