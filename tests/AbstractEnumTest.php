@@ -45,6 +45,26 @@ final class AbstractEnumTest extends TestCase
     /**
      * @test
      */
+    public function isShouldReturnTrueWhenComparingObjectsWithTheSameTypeAndValue(): void
+    {
+        $a = TestEnum::get(TestEnum::A);
+
+        self::assertTrue($a->isA());
+    }
+
+    /**
+     * @test
+     */
+    public function isShouldReturnFalseWhenComparingObjectsWithTheSameTypeAndDifferentValue(): void
+    {
+        $a = TestEnum::get(TestEnum::A);
+
+        self::assertFalse($a->isB());
+    }
+
+    /**
+     * @test
+     */
     public function equalsShouldReturnTrueWhenComparingObjectsWithTheSameTypeAndValue(): void
     {
         $a = TestEnum::get(TestEnum::A);
@@ -144,7 +164,19 @@ final class AbstractEnumTest extends TestCase
      */
     public function isShouldThrowAnExceptionWhenWhenCallingAnInvalidMethod(): void
     {
-        TestEnum::isDoesNotExist();
+        $enum = TestEnum::a();
+        $enum->isDoesNotExist();
+    }
+
+    /**
+     * @test
+     *
+     * @expectedException \BadMethodCallException
+     * @expectedExceptionMessage Werkspot\Enum\Tests\TestEnum::doesNotExist() does not exist
+     */
+    public function shouldThrowAnExceptionWhenWhenCallingAnInvalidStaticMethod(): void
+    {
+        TestEnum::doesNotExist();
     }
 
     /**
