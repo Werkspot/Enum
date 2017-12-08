@@ -50,6 +50,18 @@ abstract class AbstractEnum
         throw new BadMethodCallException(sprintf('%s::%s() does not exist', static::class, $methodName));
     }
 
+    public function __call(string $methodName, array $arguments)
+    {
+        foreach (self::getConstants() as $option => $value) {
+            $isaMethodName = 'is' . ucfirst(Inflector::classify(strtolower($option)));
+            if ($isaMethodName === $methodName) {
+                return $this->equals(static::get($value));
+            }
+        }
+        throw new BadMethodCallException(sprintf('%s::%s() does not exist', static::class, $methodName));
+    }
+
+
     /**
      * @return mixed
      */

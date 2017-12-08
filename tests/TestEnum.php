@@ -8,11 +8,17 @@ use Werkspot\Enum\AbstractEnum;
 
 /**
  * @method static TestEnum a()
+ * @method bool isA()
  * @method static TestEnum b()
+ * @method bool isB()
  * @method static TestEnum a1()
+ * @method bool isA1()
  * @method static TestEnum a3()
+ * @method bool isA3()
  * @method static TestEnum anull()
+ * @method bool isAnull()
  * @method static TestEnum nameWithUnderscore()
+ * @method bool isnNameWithUnderscore()
  */
 class TestEnum extends AbstractEnum
 {
