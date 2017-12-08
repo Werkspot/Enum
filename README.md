@@ -23,8 +23,11 @@ use Werkspot\Enum\AbstractEnum;
 
 /**
  * @method static FooEnum foo()
+ * @method bool isFoo()
  * @method static FooEnum bar()
+ * @method bool isBar()
  * @method static FooEnum baz()
+ * @method bool isBaz()
  */
 final class FooEnum extends AbstractEnum
 {
