@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Werkspot\Enum;
 
 use BadMethodCallException;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use InvalidArgumentException;
 use ReflectionClass;
 use Werkspot\Enum\Util\ClassNameConverter;
@@ -41,26 +42,25 @@ abstract class AbstractEnum
     public static function __callStatic(string $methodName, array $arguments): self
     {
         foreach (self::getConstants() as $option => $value) {
-            $expectedMethodName = lcfirst(Inflector::classify(strtolower($option)));
+            $expectedMethodName = self::getInflector()->camelize(strtolower($option));
             if ($expectedMethodName === $methodName) {
                 return new static($value);
             }
         }
 
-        throw new BadMethodCallException(sprintf('%s::%s() does not exist', static::class, $methodName));
+        throw new BadMethodCallException(sprintf('%s::%s() does not exist.', static::class, $methodName));
     }
 
     public function __call(string $methodName, array $arguments)
     {
         foreach (self::getConstants() as $option => $value) {
-            $isaMethodName = 'is' . ucfirst(Inflector::classify(strtolower($option)));
+            $isaMethodName = 'is' . self::getInflector()->classify(strtolower($option));
             if ($isaMethodName === $methodName) {
                 return $this->equals(static::get($value));
             }
         }
-        throw new BadMethodCallException(sprintf('%s::%s() does not exist', static::class, $methodName));
+        throw new BadMethodCallException(sprintf('%s::%s() does not exist.', static::class, $methodName));
     }
-
 
     /**
      * @return mixed
@@ -93,6 +93,11 @@ abstract class AbstractEnum
     protected function getClassName(): string
     {
         return ClassNameConverter::stripNameSpace(static::class);
+    }
+
+    private static function getInflector(): Inflector
+    {
+        return InflectorFactory::create()->build();
     }
 
     private static function getConstants(): array
