@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Werkspot\Enum\Tests;
 
+use BadMethodCallException;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class AbstractEnumTest extends TestCase
@@ -104,12 +106,11 @@ final class AbstractEnumTest extends TestCase
 
     /**
      * @test
-     *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Value [anything] is not matching any valid value of class "TestEnum". Valid values are ['A', 'BEE', 1, 3, NULL, true].
      */
     public function exceptionMessage(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Value [anything] is not matching any valid value of class "TestEnum". Valid values are [\'A\', \'BEE\', 1, 3, NULL, true].');
         TestEnum::get('anything');
     }
 
@@ -117,12 +118,13 @@ final class AbstractEnumTest extends TestCase
      * @test
      *
      * @dataProvider getInvertedCaseOptions
-     * @expectedException \InvalidArgumentException
      *
      * @param mixed $option
      */
     public function getWithInvertedCaseIsIncorrect($option): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         TestEnum::get($option);
     }
 
@@ -136,11 +138,11 @@ final class AbstractEnumTest extends TestCase
 
     /**
      * @test
-     *
-     * @expectedException \InvalidArgumentException
      */
     public function getWithStrictEqualMatchThrowsException(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         TestEnum::get('1');
     }
 
@@ -158,24 +160,24 @@ final class AbstractEnumTest extends TestCase
 
     /**
      * @test
-     *
-     * @expectedException \BadMethodCallException
-     * @expectedExceptionMessage Werkspot\Enum\Tests\TestEnum::isDoesNotExist() does not exist
      */
     public function isShouldThrowAnExceptionWhenWhenCallingAnInvalidMethod(): void
     {
+        $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('Werkspot\Enum\Tests\TestEnum::isDoesNotExist() does not exist.');
+
         $enum = TestEnum::a();
         $enum->isDoesNotExist();
     }
 
     /**
      * @test
-     *
-     * @expectedException \BadMethodCallException
-     * @expectedExceptionMessage Werkspot\Enum\Tests\TestEnum::doesNotExist() does not exist
      */
     public function shouldThrowAnExceptionWhenWhenCallingAnInvalidStaticMethod(): void
     {
+        $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('Werkspot\Enum\Tests\TestEnum::doesNotExist() does not exist.');
+
         TestEnum::doesNotExist();
     }
 
