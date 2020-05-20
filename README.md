@@ -1,7 +1,7 @@
 # Enum
 This package holds a simple class that may be used as an ancestor for your enum classes.
 
-[![Build Status](https://travis-ci.org/Werkspot/Enum.svg?branch=master)](https://travis-ci.org/Werkspot/Enum)
+[![Build Status](https://travis-ci.com/Werkspot/Enum.svg?branch=master)](https://travis-ci.com/Werkspot/Enum)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Werkspot/Enum/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Werkspot/Enum/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/Werkspot/Enum/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Werkspot/Enum/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/werkspot/enum/v/stable)](https://packagist.org/packages/werkspot/enum)
