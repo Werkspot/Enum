@@ -12,3 +12,7 @@ before_script:
   - php composer.phar install --dev
 
 script: make unit-tests
+
+branches:
+  only:
+    - master
